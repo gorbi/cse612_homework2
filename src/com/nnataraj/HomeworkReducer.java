@@ -23,34 +23,28 @@ public class HomeworkReducer extends Reducer<Text, Text, Text, Text> {
     // The Karmasphere Studio Workflow Log displays logging from Apache Commons Logging, for example:
     // private static final Log LOG = LogFactory.getLog("com.nnataraj.HomeworkReducer");
 
-    private Map<String, List<String>> graph = new HashMap<>();
-
     @Override
     protected void reduce(Text key, Iterable<Text> values, Context context)
             throws IOException, InterruptedException {
 
-        List<String> values_ = new ArrayList<>();
+        MapList mapList = new MapList();
+
         for (Text value : values) {
-            values_.add(value.toString());
+            String[] kv = value.toString().split(",");
+            mapList.put(kv[0], kv[1]);
         }
 
-        graph.put(key.toString(), values_);
-
-        for (String value : values_) {
-            if (graph.containsKey(value)) {
-                for (String node : graph.get(value)) {
-                    if (!key.toString().equalsIgnoreCase(node)) {
-                        context.write(new Text(node + "," + value), key);
+        Set<String> keys = mapList.keySet();
+        for (String key_ : keys) {
+            List<String> values_ = mapList.get(key_);
+            for (String value : values_) {
+                if (mapList.containsKey(value)) {
+                    List<String> values__ = mapList.get(value);
+                    for (String value_ : values__) {
+                        if (!key_.equals(value_))
+                            context.write(new Text(value_ + "," + value), new Text(key_));
                     }
                 }
-            }
-            Set<String> keys = graph.keySet();
-            for (String key_ : keys) {
-                if (!key_.equalsIgnoreCase(key.toString()))
-                    if (graph.get(key_).contains(key.toString())) {
-                        if (!value.equalsIgnoreCase(key_))
-                            context.write(new Text(value + "," + key), new Text(key_));
-                    }
             }
         }
 

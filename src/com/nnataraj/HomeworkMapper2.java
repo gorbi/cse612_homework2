@@ -8,27 +8,24 @@
 package com.nnataraj;
 
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-// import org.apache.commons.logging.Log;
-// import org.apache.commons.logging.LogFactory;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-import org.apache.hadoop.io.Text;
+import java.io.IOException;
+
+// import org.apache.commons.logging.Log;
+// import org.apache.commons.logging.LogFactory;
 
 /**
  * @author nagaprasad
  */
-public class HomeworkMapper extends Mapper<Text, Text, Text, Text> {
+public class HomeworkMapper2 extends Mapper<Text, Text, Text, Text> {
     // The Karmasphere Studio Workflow Log displays logging from Apache Commons Logging, for example:
-    // private static final Log LOG = LogFactory.getLog("com.nnataraj.HomeworkMapper");
+    // private static final Log LOG = LogFactory.getLog("com.nnataraj.HomeworkMapper2");
 
     @Override
     protected void map(Text key, Text value, Context context)
             throws IOException, InterruptedException {
-        context.write(key, new Text(key + "," + value));
-        context.write(value, new Text(key + "," + value));
+        context.write(key, value);
     }
 }
