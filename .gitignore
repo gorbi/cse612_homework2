@@ -1,0 +1,10 @@
+.DS_Store
+.idea/.DS_Store
+.idea/vcs.xml
+.idea/workspace.xml
+data/.DS_Store
+data/output/
+data/output_temp/
+out/
+src/.DS_Store
+src/com/.DS_Store
